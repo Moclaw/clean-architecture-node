@@ -11,8 +11,13 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	// Add other fields specific to the User model
-	// For example, name, email, etc.
+
+	role: {
+		type: String,
+		required: true,
+		enum: ['user', 'admin'],
+		default: 'user',
+	},
 });
 
 // Create the UserModel from the schema

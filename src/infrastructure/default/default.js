@@ -1,7 +1,8 @@
 class DefaultResponse {
-	constructor() {
-		this.status = 200;
-		this.message = '';
-		this.data = {};
+	constructor(data, message) {
+		this.data = data;
+		this.message = message;
 	}
 }
+
+module.exports = DefaultResponse;
