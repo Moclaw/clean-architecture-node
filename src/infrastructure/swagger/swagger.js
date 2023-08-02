@@ -2,36 +2,6 @@ const swaggerJsdoc = require('swagger-jsdoc');
 const path = require('path');
 const glob = require('glob');
 const expressListEndpoints = require('express-list-endpoints');
-const { generateRequestBodyExample } = require('./example-generator');
-
-function getRequestPropertiesFromBody(item) {
-	const requestBodyProperties = {};
-
-	if (item.schema && item.schema.body) {
-		// If schema.body is an object literal
-		if (typeof item.schema.body === 'object') {
-			for (const key in item.schema.body) {
-				requestBodyProperties[key] = {
-					type: typeof item.schema.body[key],
-					// You can add more properties to the schema as needed (e.g., description, example, etc.)
-					example: item.schema.body[key].example || null, // Use the example value if available
-				};
-			}
-		} else if (typeof item.schema.body === 'function') {
-			// If schema.body is a constructor function (class)
-			const instance = new item.schema.body();
-			for (const key in instance) {
-				requestBodyProperties[key] = {
-					type: typeof instance[key],
-					// You can add more properties to the schema as needed (e.g., description, example, etc.)
-					example: instance[key].example || null, // Use the example value if available
-				};
-			}
-		}
-	}
-
-	return requestBodyProperties;
-}
 
 const options = {
 	swaggerDefinition: {
@@ -140,7 +110,6 @@ routeFiles.forEach((routeFile) => {
 		} else {
 			// For other methods (POST, PUT, DELETE), include the requestBody if schema.body exists
 			if (item.methods.includes('POST') || item.methods.includes('PUT') || item.methods.includes('DELETE')) {
-				console.log(item);
 				if (item.schema && item.schema.body) {
 					options.swaggerDefinition.paths[path][method].requestBody = {
 						content: {

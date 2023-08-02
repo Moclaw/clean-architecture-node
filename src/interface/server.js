@@ -6,6 +6,7 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDef = require('../infrastructure/swagger/swagger');
 const path = require('path');
 const glob = require('glob');
+const errorHandler = require('./http/middleware/error-handler');
 
 dotenv.config();
 
@@ -13,25 +14,15 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
+// Import middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(errorHandler);
+
+
 // Import database configuration
 const connectDB = require('../infrastructure/database/db.config');
 
-// Middleware for parsing JSON and URL-encoded data
-app.use(
-	OpenApiValidator.middleware({
-		apiSpec: '../../api.yaml',
-		validateRequests: true,
-		validateResponses: true,
-	}),
-);
-app.use((err, req, res, next) => {
-	// format errors
-	res.status(err.status || 500).json({
-		message: err.message,
-		errors: err.errors,
-	});
-});
-// Import all routes format api/filename/*.routes.js
 const routeFiles = glob.sync(path.join(__dirname, '../interface/http/routes/*.routes.js'));
 
 routeFiles.forEach((routeFile) => {

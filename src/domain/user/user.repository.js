@@ -1,13 +1,15 @@
-// user.repository.js
+const BaseRepository = require('../base.repository');
+const UserModel = require('./user.model');
 
-const mongoose = require('mongoose');
-const User = require('./user.entity');
-
-class UserRepository {
+class UserRepository extends BaseRepository {
 	constructor() {
-		this.UserModel = User
+		super(UserModel);
+	}
+
+	async getUserByUsername(username) {
+		return await this.findByKey('username', username);
 	}
 
 }
 
-module.exports = UserRepository;
+module.exports = new UserRepository();
