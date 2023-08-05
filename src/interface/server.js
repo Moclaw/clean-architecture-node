@@ -7,6 +7,7 @@ const swaggerDef = require('../infrastructure/swagger/swagger');
 const path = require('path');
 const glob = require('glob');
 const errorHandler = require('./http/middleware/error-handler');
+const cors = require('cors');
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ const server = http.createServer(app);
 const io = socketIO(server);
 
 // Import middleware
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(errorHandler);

@@ -9,7 +9,6 @@ class UserRepository extends BaseRepository {
 	async getUserByUsername(username) {
 		return await this.findByKey('username', username);
 	}
-
 }
 
 module.exports = new UserRepository();

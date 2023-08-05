@@ -60,7 +60,7 @@ routeFiles.forEach((routeFile) => {
 
 		const method = item.methods[0].toLowerCase();
 		const pathName = item.path.replace(/:(\w+)/g, '{$1}');
-		const path = '/' + group + pathName;
+		const path = '/api/' + group + pathName;
 
 		if (!options.swaggerDefinition.paths[path]) {
 			options.swaggerDefinition.paths[path] = {};
